@@ -1,0 +1,155 @@
+/** 
+ * Peanuts and Pretzels game app
+ * Recursively makes turns to determine if any starting turn can guarantee a victory
+ * Author Benjaman Dutton - and others
+ * 
+ * Will slow down if multiple rules with greater than or less than signs are used
+ * 
+ */
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.NumberFormatException;
+import java.util.ArrayList;
+
+public class PandP {
+  
+  private static ArrayList<Integer> pean = new ArrayList<Integer>();
+  private static ArrayList<Integer> pret = new ArrayList<Integer>();
+  private static ArrayList<Character> sign1 = new ArrayList<Character>();
+  private static ArrayList<Character> sign2 = new ArrayList<Character>();
+  private static int peanuts;
+  private static int pretzels;
+  
+  public static void main(String [] args) throws IOException{
+    //read stuff
+    BufferedReader inputs = new BufferedReader(new InputStreamReader(System.in));
+    while (true){
+      pean = new ArrayList<Integer>();
+      pret = new ArrayList<Integer>();
+      sign1 = new ArrayList<Character>();
+      sign2 = new ArrayList<Character>();
+      String [] amount = inputs.readLine().split(" ");
+      peanuts = Integer.valueOf(amount[0]);
+      pretzels = Integer.valueOf(amount[1]);
+      String [] s;
+      while ((s = inputs.readLine().split(" ")) != null) {
+        if (s[0].equals("") || s[0].substring(0,1).equals(" ")) break;
+        sign1.add(s[0].charAt(0));
+        pean.add(Integer.valueOf(s[0].substring(1,s[0].length())));
+        sign2.add(s[1].charAt(0));
+        pret.add(Integer.valueOf(s[1].substring(1,s[1].length())));
+      }
+      pean.add(0);pret.add(1);sign1.add('=');sign2.add('='); //base move 1
+      pean.add(1);pret.add(0);sign1.add('=');sign2.add('='); //base move 2
+      //System.out.println(peanuts + " " + pretzels);
+      mm(); // make moves with the > and < signs
+      if (!yt(peanuts, pretzels)) System.out.println("0 0");
+    }
+  }
+  
+  public static boolean yt(int pe, int pr){
+    if (pe <= 0 && pr <= 0) return false;
+    //System.out.println("Your turn " + pe + " " + pr);
+    // Checks if it can win this turn
+    for (int i = 0; i < pean.size(); i ++){
+      if (pe - pean.get(i) == 0 && pr - pret.get(i) == 0){
+        if (pe == peanuts && pr == pretzels) System.out.println(pean.get(i) + " " + pret.get(i));
+        return true;
+      }
+    }
+    // tries each turn and calls a method to give the other player a turn
+    for (int i = 0; i < pean.size(); i++){
+      //System.out.println(i);
+      int p1 = pe - pean.get(i); int p2 = pr - pret.get(i);
+      if (p1 < 0 || p2 < 0);
+      else {
+        if (tt(p1, p2)) {
+          if (pe == peanuts && pr == pretzels) {
+            System.out.println(pean.get(i) + " " + pret.get(i));
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+  
+  public static boolean tt(int pe, int pr){
+    if (pe <= 0 && pr <= 0) return true;
+    //System.out.println("Their turn " + pe + " " + pr);
+    // Checks if it can win this turn
+    for (int i = 0; i < pean.size(); i ++){
+      if (pe - pean.get(i) == 0 && pr - pret.get(i) == 0){
+        return false;
+      }
+    }
+    // tries each turn and calls a method to give the other player a turn
+    for (int i = 0; i < pean.size(); i ++){
+      //System.out.println(i);
+      int p1 = pe - pean.get(i); int p2 = pr - pret.get(i);
+      if (p1 > 0 || p2 > 0){
+        if (p1 < 0 || p2 < 0);
+        else {
+          if (yt(p1, p2)) return false;
+        }
+      }
+    }
+    return true;
+  }
+  
+  private static void mm(){
+    for (int i = 0; i < sign1.size(); i++){
+      if (sign1.get(i) == '<' && sign2.get(i) == '<'){
+        for (int j = 0; j < pean.get(i); j ++){
+          for (int k = 0; k < pret.get(i); k ++){
+            pean.add(j);
+            pret.add(k);
+          }
+        }
+      }else if (sign1.get(i) == '>' && sign2.get(i) == '<'){
+        for (int j = pean.get(i) + 1; j <= 1000; j ++){
+          for (int k = 0; k < pret.get(i); k ++){
+            pean.add(j);
+            pret.add(k);
+          }
+        }
+      }else if (sign1.get(i) == '>' && sign2.get(i) == '>'){
+        for (int j = pean.get(i) + 1; j <= 1000; j ++){
+          for (int k = pret.get(i) + 1; k <= 1000; k ++){
+            pean.add(j);
+            pret.add(k);
+          }
+        }
+      }else if (sign1.get(i) == '<' && sign2.get(i) == '>'){
+        for (int j = 0; j < pean.get(i); j ++){
+          for (int k = pret.get(i) + 1; k <= 1000; k ++){
+            pean.add(j);
+            pret.add(k);
+          }
+        }
+      }else if (sign1.get(i) == '=' && sign2.get(i) == '<'){
+        for (int j = 0; j < pret.get(i); j ++){
+          pean.add(pean.get(i));
+          pret.add(j);
+        }
+      }else if (sign1.get(i) == '<' && sign2.get(i) == '='){
+        for (int j = 0; j < pean.get(i); j ++){
+          pean.add(j);
+          pret.add(pret.get(j));
+        }
+      }else if (sign1.get(i) == '>' && sign2.get(i) == '='){
+        for (int j = pean.get(i) + 1; j <= 1000; j ++){
+          pean.add(j);
+          pret.add(pret.get(j));
+        }
+      }else if (sign1.get(i) == '=' && sign2.get(i) == '>'){
+        for (int j = pret.get(i) + 1; j <= 1000; j ++){
+          pean.add(pean.get(i));
+          pret.add(j);
+        }
+      }
+    }
+  }
+}

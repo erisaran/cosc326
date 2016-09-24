@@ -1,0 +1,92 @@
+import java.lang.Math;
+
+public strictfp class Numbers{
+  
+  static int x1 = 2;
+  static int x2 = 2000;
+  static int x3 = 2000000;
+  static int x4 = 2000000000;
+  
+  public static void main(String [] args){
+    
+    question_1();
+    question_2();
+    question_3();
+    question_4();
+  }
+  
+  private static void question_1(){
+    
+    System.out.println("Q1");
+    System.out.println(midpoint(x1,x1) == x1);
+    System.out.println(midpoint(x2,x2) == x2);
+    System.out.println(midpoint(x3,x3) == x3);
+    System.out.println(midpoint(x4,x4) == x4);
+  }
+  
+  private static int midpoint(int x1, int x2){
+    int midpointx = (x1+x2)/2;
+    return midpointx;
+  }
+  
+  private static int midpt2(int x1, int x2){
+    return x1 + ((x2-x1)/2);
+  }
+  
+  private static void question_2(){
+    System.out.println("\nQ2");
+    System.out.println(midpt2(x1,x1) == x1);
+    System.out.println(midpt2(x2,x2) == x2);
+    System.out.println(midpt2(x3,x3) == x3);
+    System.out.println((midpt2(x4,x4) == x4 )+ "\n");
+    
+    System.out.println(midpoint(x1,x2) == midpoint(x2,x1));
+    System.out.println(midpoint(x3,x4) == midpoint(x4,x3));
+  }
+  
+  private static void question_3(){
+    System.out.println("\nQ3");
+    System.out.println(midpt2(x1,x1));
+    System.out.println(midpt2(x1,x2));
+    System.out.println(midpt2(x1,x3));
+    System.out.println(midpt2(x1,x4));
+    System.out.println(midpt2(x2,x1));
+    System.out.println(midpt2(x2,x2));
+    System.out.println(midpt2(x2,x3));
+    System.out.println(midpt2(x2,x4));
+    System.out.println(midpt2(x3,x1));
+    System.out.println(midpt2(x3,x2));
+    System.out.println(midpt2(x3,x3));
+    System.out.println(midpt2(x3,x4));
+    System.out.println(midpt2(x4,x1));
+    System.out.println(midpt2(x4,x2));
+    System.out.println(midpt2(x4,x3));
+    System.out.println((midpt2(x4,x4))+ "\n");
+  }
+  
+  private static void question_4(){
+    System.out.println("\nQ4");
+    System.out.println(midpt3(x1,x1));
+    System.out.println(midpt3(x1,x2));
+    System.out.println(midpt3(x1,x3));
+    System.out.println(midpt3(x1,x4));
+    System.out.println(midpt3(x2,x1));
+    System.out.println(midpt3(x2,x2));
+    System.out.println(midpt3(x2,x3));
+    System.out.println(midpt3(x2,x4));
+    System.out.println(midpt3(x3,x1));
+    System.out.println(midpt3(x3,x2));
+    System.out.println(midpt3(x3,x3));
+    System.out.println(midpt3(x3,x4));
+    System.out.println(midpt3(x4,x1));
+    System.out.println(midpt3(x4,x2));
+    System.out.println(midpt3(x4,x3));
+    System.out.println((midpt3(x4,x4))+ "\n");
+  }
+  
+  private static int midpt3(int x1, int x2){
+    return x1 <= x2? (x2-x1)/2 + x1 : (x1-x2)/2 + x2;
+  }
+}
+  
+  

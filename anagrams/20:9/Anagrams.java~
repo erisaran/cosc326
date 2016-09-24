@@ -1,0 +1,87 @@
+/** Author Benjaman Dutton - ID # 247060
+ **/
+
+import java.util.*;
+
+public class Anagrams {
+  
+  private static Hashtable<Integer,ArrayList<String>> h = new 
+    Hashtable<Integer,ArrayList<String>>();
+  private static ArrayList<Integer []> c = new ArrayList<Integer []>();
+  
+  public static void main(String [] args){
+    
+    Scanner d = new Scanner(System.in);
+    String sentence = ""; int max = 0; int sl = 0; String sortedSentence = "";
+    
+    
+    // process args
+    if (args.length == 2){
+      sentence = args[0].toLowerCase().replaceAll("[^a-z]*", "");
+      sl = sentence.length();
+      sortedSentence = sortWord(sentence);
+      max = Integer.valueOf(args[1]);
+    }else System.out.println("Not enough args");
+    for (int i = 1; i <= sentence.length(); i++) h.put(i, new ArrayList<String>());
+    
+    // read stuff
+    while(d.hasNextLine()){
+      String word = d.nextLine().toLowerCase();
+      boolean pw = true;
+      for (int i = 0; i < word.length(); i++){
+        if (sentence.indexOf(word.charAt(i)) == -1) pw = false;
+      }
+      Integer wl = word.length();
+      if (pw){
+        if (h.containsKey(wl)) h.get(wl).add(word);
+        else {
+          h.get(wl).add(word);
+        }
+      }
+    }
+    
+    // calculate stuff
+    
+    
+    /*
+    for (int i = 2; i <= max; i++){
+      for (int j = sl - 1; j> sl/(i+1); j--){
+        
+      }
+    }
+    */
+    
+    
+    ArrayList<String> list = h.get(sl);
+    for (int i = 0; i < list.size(); i++){
+      String w = list.get(i);
+      if (sortWord(w).equals(sortedSentence)) System.out.println(w);
+    }
+    
+    System.out.println(sortedSentence + " " + h);
+  }
+  
+  private static String sortWord(String word){
+    String sortedSentence = "";
+    for (Character a = 'a'; a <= 'z'; a++){
+      for (int i = 0; i < word.length() ; i++){
+        if (word.charAt(i) == a) sortedSentence += a.toString();
+      }
+    }
+    return sortedSentence;
+  }
+}
+
+
+/*
+      for (Character a = 'a'; a <= 'z'; a++){
+        for (int i = 0; i < word.length() ; i++){
+          if (word.charAt(i) == a) {
+            if (sentence.indexOf(a) == -1){
+              a = 'z';
+              w = "";
+            }else w += a.toString();
+          }
+        }
+      }
+      */

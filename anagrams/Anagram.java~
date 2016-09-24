@@ -1,0 +1,51 @@
+/** Anagram program for finding anagrams
+  * Author: Ben Dutton
+  */
+
+import java.util.*;
+
+public class Anagram {
+  
+  public static ArrayList<ArrayList<String>> words  = new ArrayList<ArrayList<String>>();
+  public static Hashtable<Character,Integer> h = new Hashtable<Character,Integer>();
+  
+  public static void main(String [] args){
+    
+    Scanner d = new Scanner(System.in);
+    String sentence = ""; int max = 0; int sl = 0;
+    //read stuff
+    if (args.length == 2){
+      sentence = args[0].toLowerCase().replaceAll("[^a-z]*", "");
+      for (int i = 0; i < sentence.length(); i++){
+        char s = sentence.charAt(i);
+        sl = sentence.length();
+        if (h.containsKey(s)) {
+          Integer x = h.get(s);
+          h.put(s,x+1);
+        }else h.put(s, 1);
+      }
+      max = Integer.valueOf(args[1]);
+    }else System.out.println("Not enough args");
+    for (int i = 0; i < sl; i++) words.add(new ArrayList<String>());
+    while(d.hasNextLine()){
+      String word = d.nextLine();
+      int wl = word.length();
+      if (wl > 0 && wl < sl) words.get(word.length() - 1).add(word);
+    }
+    
+    //calculate stuff
+    for (int i = 0; i < max; i++){
+      for (int j = sl; j > 0; j --){
+      }
+    }
+    
+
+    //print stuff
+    System.out.println(sentence + " " + max + " " + h);
+    for (int i = 0; i < words.size(); i++){
+      for (int j = 0; j < words.get(i).size(); j++) System.out.print(words.get(i).get(j)+ " ");
+      System.out.println();
+    }
+  }
+  
+}

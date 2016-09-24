@@ -1,0 +1,31 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+class Arithmetic{
+  
+  private static Stack num = new Stack<Integer>();
+  private static int [] numbers;
+  private static int sum;
+  private static boolean LtoR = false;
+  
+  public static void main(String [] args){
+    int round = 1;
+    while(true){
+      Scanner input = new Scanner(System.in);
+      int x;
+      System.out.println("Round: " + round);
+      round++;
+      while (input.hasNextInt()){
+        x = input.nextInt();
+        num.push((int) x);
+      }
+      sum = input.nextInt();
+      if (input.next().equals("N")){
+        LtoR = false;
+      }else if (input.next().equals("L")){
+        LtoR = true;
+      }
+    }
+    
+  }
+}

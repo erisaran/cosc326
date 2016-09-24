@@ -1,0 +1,15 @@
+class BestRollin extends Rollin {
+            public int decideRoll(int roll) {
+  return rng.nextInt(diceInGame+2);
+            }
+           
+            public static void main(String[] args) {
+  Rollin test = new MyRollin();
+  int turns = 0;
+  while (!test.isComplete()) {
+      test.turn();
+      turns++;
+  }
+  System.out.println(turns);
+     }
+        }

@@ -1,0 +1,15 @@
+public class X {
+  
+  public static void main(String [] args) {
+    
+    String [] s = {"a9 1 a-a9"};
+    String [] sf = {" a", "a1a1-", "a1-a1 -a"};
+    Pattern r = Pattern.compile("[a-zA-z0-9'._-]{1}[a-zA-z0-9' ._-]*[a-zA-z0-9'._-]{1}");
+    for (int i = 0; i < s.length; i++){
+      Matcher ra = r.matcher(s[i]); 
+    }
+    for (int i = 0; i < sf.length; i++){
+      Matcher ra = r.matcher(sf[i]); 
+    }
+  }
+}

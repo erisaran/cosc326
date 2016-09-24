@@ -1,0 +1,186 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.NumberFormatException;
+import java.util.ArrayList;
+
+public class PandP {
+  
+  private static int peanuts;
+  private static int pretzels;
+  private static boolean [] [] snacks;
+  private static ArrayList<Integer> pean = new ArrayList<Integer>();
+  private static ArrayList<Integer> pret = new ArrayList<Integer>();
+  private static byte[][] state;
+  
+  public static void main(String [] args) throws IOException{
+    //read stuff
+    BufferedReader inputs = new BufferedReader(new InputStreamReader(System.in));
+    String [] amount = inputs.readLine().split(" ");
+    peanuts = Integer.valueOf(amount[0]);
+    pretzels = Integer.valueOf(amount[1]);
+    snacks = new boolean [peanuts + 1] [pretzels + 1];
+    String s;
+    boolean found = false;
+    while ((s = inputs.readLine()).length() > 0){
+      addSnack(s);
+    }
+    snacks[0][0] = false;
+    snacks[0][1] = true;
+    snacks[1][0] = true;
+    state = new byte[peanuts+1][pretzels+1];
+     for (byte[] row : state){
+        for(byte b : row){
+          b = 0x00;
+        }
+      }
+    
+    for (int i = 0; i < snacks.length; i ++){
+      for (int j = 0; j < snacks[i].length; j++){
+        if (snacks[i][j]){
+          //System.out.println(i + " " + j);
+          pean.add(i);
+          pret.add(j);
+        }
+      }
+    }
+    
+    for (int i = 0; i < pean.size(); i++){
+        if (peanuts - pean.get(i) == 0 && pretzels - pret.get(i) == 0){
+          System.out.println(pean.get(i) + " " + pret.get(i));
+          found = true;
+          break;
+        }
+      }
+      if (!found){
+        for (int i = 0; i < pean.size(); i++){
+          if (t(peanuts - pean.get(i), pretzels - pret.get(i), 1)){
+            System.out.println(pean.get(i) + " " + pret.get(i));
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found){
+        System.out.println("0 0");
+      }
+  }
+  
+  
+  private static boolean y(int a, int b, int gen){
+    if (a == 0 && b == 0) return false;
+    if(state[a][b] == 0x01){
+      return true;
+    }else if(state[a][b] == 0x02){
+      return false;
+    }
+    //System.out.println(gen + " you " + a + " " + b);
+    for (int i = 0; i < pean.size(); i ++){
+      if (a - pean.get(i) == 0 && b - pret.get(i) == 0){
+        state[a][b] = 0x01;
+        //System.out.println(pean.get(i) + " " + pret.get(i));
+        return true;
+      }
+    }
+    for (int i = 0; i < pean.size(); i++){
+      int p1 = a - pean.get(i); int p2 = b - pret.get(i);
+      if (p1 >= 0 && p2 >= 0){
+        if (t(p1,p2, gen + 1)){
+          //System.out.println(pean.get(i) + " " + pret.get(i));
+          state[a][b] = 0x01;
+          return true;
+        }
+      }
+    }
+    state[a][b] = 0x02;
+    return false;
+  }
+ 
+  private static boolean t(int a, int b, int gen){
+    if (a == 0 && b == 0) return true;
+    if(state[a][b] == 0x01){
+      return false;
+    }else if(state[a][b] == 0x02){
+      return true;
+    }
+    //System.out.println(gen + " them " + a + " " + b + " ");
+    for (int i = 0; i < pean.size(); i ++){
+      if (a - pean.get(i) == 0 && b - pret.get(i) == 0){
+        //System.out.println(pean.get(i) + " " + pret.get(i));
+        state[a][b] = 0x01;
+        return false;
+      }
+    }
+    for (int i = 0; i < pean.size(); i ++){
+      int p1 = a - pean.get(i); int p2 = b - pret.get(i);
+      if (p1 >= 0 && p2 >= 0){
+        //System.out.println("their turn " + pean.get(i) + " " + pret.get(i));
+        if (y(p1,p2, gen + 1) == false){
+          state[a][b] = 0x01;
+          return false;
+        }
+      }
+    }
+    state[a][b] = 0x02;
+    return true;
+  }
+  
+  private static void addSnack(String s){
+    String [] sneck = s.split(" ");
+    if (sneck.length != 2){
+      System.out.println("Invalid turn");
+      return;
+    }
+    char spe = sneck[0].charAt(0);
+    int ape = Integer.valueOf(sneck[0].substring(1,sneck[0].length()));
+    char spr = sneck[1].charAt(0);
+    int apr = Integer.valueOf(sneck[1].substring(1,sneck[1].length()));
+    if (spe == '<' && spr == '<'){
+      for (int i = 0; i < ape; i ++){
+        for (int j = 0; j < apr; j ++){
+          snacks[i][j] = true;
+        }
+      }
+    }else if (spe == '<' && spr == '>'){
+      for (int i = 0; i < ape; i ++){
+        for (int j = apr + 1; j <= pretzels; j ++){
+          snacks[i][j] = true;
+        }
+      }
+    }else if (spe == '>' && spr == '<'){
+      for (int i = ape + 1; i <= peanuts; i ++){
+        for (int j = 0; j < apr; j ++){
+          snacks[i][j] = true;
+        }
+      }
+    }else if (spe == '>' && spr == '>'){
+      for (int i = ape + 1; i <= peanuts; i ++){
+        for (int j = apr + 1; j <= pretzels; j ++){
+          snacks[i][j] = true;
+        }
+      }
+    }else if (spe == '<' && spr == '>'){
+      for (int i = 0; i < ape; i ++){
+        for (int j = apr + 1; j <= pretzels; j ++){
+          snacks[i][j] = true;
+        }
+      }
+    }else if (spe == '=' && spr == '>'){
+      for (int j = apr + 1; j <= pretzels; j ++){
+        snacks[ape][j] = true;
+      }
+    }else if (spe == '=' && spr == '<'){
+      for (int j = 0; j < apr; j ++){
+        snacks[ape][j] = true;
+      }
+    }else if (spe == '<' && spr == '='){
+      for (int i = 0; i < ape; i ++){
+        snacks[i][apr] = true;
+      }
+    }else if (spe == '>' && spr == '='){
+      for (int i = ape + 1; i <= peanuts; i ++){
+        snacks[i][apr] = true;
+      }
+    }
+  }
+}

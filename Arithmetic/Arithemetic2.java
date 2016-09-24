@@ -1,0 +1,120 @@
+/* Author - Benjaman Dutton
+ * 26/7/16
+ * Arithmetic game program. Finds a if a set of numbers can be used to get to a goal number.
+ * Checks every possible combination until it finds something that works or exhausts combinations.
+ * Expects valid input at all times!
+ */
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.NumberFormatException;
+import java.util.ArrayList;
+
+class Arithemetic2 {
+  
+  public static void main(String [] args) throws IOException{
+    
+    while(true){
+      //read stuff
+      BufferedReader numLine = new BufferedReader(new InputStreamReader(System.in));
+      ArrayList<Integer> n = new ArrayList<Integer>(); //n for the numbers
+      for (String a : numLine.readLine().split(" ")) n.add(Integer.valueOf(a)); 
+      String [] rules = numLine.readLine().split(" "); // stores the rules
+      int t = Integer.valueOf(rules[0]); // t for target
+      boolean propop = (rules[1].equals("N")) ? true : false; // keeps track of proper operations
+      
+      //calls a method to generate a list of combinations
+      boolean [] [] c = createCombinations(n.size()); // c for combinations
+      
+      //calls method to create the formula
+      String f = calculate(c,t,n,propop); // f for formula
+      
+      //Print result
+      System.out.println((propop ? "N" : "L" ) + " " + (!f.equals("") ? f : "Impossible"));
+      
+    }
+  }
+  
+  /* Do calculations - either left to right or proper order
+   * @param c the matrix of all possible operator Combinations
+   * @param t the Target value
+   * @param n the Numbers that need to reach the target
+   * @param r if the rule is proper order or not
+   * @return the formula, it will be empty if impossible
+   */
+  public static String calculate(boolean[][] c,int t,ArrayList<Integer> n, boolean r){
+    String formula = "";
+    if (!r){ // if left to right is specified
+      for (int i = 0; i < c.length; i ++){
+        int total = n.get(0);
+        for (int j = 0; j < c[i].length; j ++){
+          total = c[i][j] ? total * n.get(j+1) : total + n.get(j+1);
+        }
+        if (total == t) return makeString(c[i],n);
+      }
+    }else{ //if proper order is specified
+      for (int i = 0; i < c.length; i++){
+        int total = 0;
+        ArrayList<Integer> copy = new ArrayList<Integer>();
+        for (int a : n) copy.add(a);
+        for (int j = c[i].length -1; j >= 0; j --){
+          if (c[i][j]){
+            copy.set(j,copy.get(j) * copy.get(j+1)) ;
+            copy.remove(j+1);
+          }
+        }
+        for (int x : copy) total += x;
+        if (total == t) return makeString(c[i],n);
+      }
+    }
+    return "";
+  }
+  
+  /* Create a list of all possible operations
+   * @param size of the number of inputs
+   * @return a array of arrays of booleans that represents each possible
+   * combination of operators
+     */
+  public static boolean [] [] createCombinations (int size){
+    boolean [] [] c = new boolean [power(2, size - 1)] [size -1]; // c for combinations
+    int [] b = new int[size -1]; // b for binary sequence
+    int r = c.length/2; // r for the range of numbers from halving size until 0
+    for (int i = 0; i < b.length; i ++) {
+      b[i] = r; r = r/2;
+    }
+    for (int i = 0; i < b.length; i ++){ int count = 0;
+      for (int j = 0; j < c.length; j ++) {
+        c[j][i] = ((count / b[i]) % 2) == 0 ? true : false; count ++;
+      }
+    }
+    return c;
+  }
+  
+  /* Calculates the power of a number to another number
+   * @param x the number
+   * @param y the exponent
+   * @return an int that is the result
+   */
+  public static int power(int x, int y){
+    int result = x;
+    for (int i = 1; i < y; i ++) result *= x;
+    return result;
+  }
+  
+  
+  /* Makes a formula given a successful array of operands
+   * @param c the array of operands
+   * @param n the numbers from the user
+   * @return string to represent the successful formula
+   */
+  public static String makeString(boolean [] c, ArrayList<Integer> n){
+    String formula = "";
+    formula += n.get(0);
+    for (int j = 0; j < c.length; j++) {
+      formula += c[j] ? (" * " + n.get(j+1) ) : " + " + n.get(j+1);
+    }
+    return formula;
+  }
+ }
+    

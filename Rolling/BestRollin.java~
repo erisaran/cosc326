@@ -1,0 +1,90 @@
+class BestRollin extends Rollin {
+  
+  public int decideRoll(int roll) {
+    
+    if (finishState(roll) > 0){
+      return finishState(roll);
+    }else {
+      return bestMove(roll);
+    }
+  }
+  
+  
+  public int finishState(int n){
+    int og_num;
+    int og_i;
+    
+    for(int i=0;i<=5;i++){
+      og_i = i;
+      og_num = dice[i];
+      dice[i] = n;
+      if(isComplete()){
+        
+        return og_i;
+        
+      }else{
+        
+        dice[og_i] = og_num;
+      }
+    }
+    return 0;
+  }
+  
+  public int bestMove(int n){
+    int bestChanceIndex = 0;
+    int [] chanceCounts = new int[diceInGame];
+    int highest = 0;
+    for (int i = 0; i < chanceCounts.length; i++){
+      int store = dice[i];
+      dice[i] = n;
+      chanceCounts[i] = countChance();
+      dice[i] = store;
+    }
+    for (int j = 0; j < chanceCounts.length; j++){
+      if (chanceCounts[j] > highest){
+        highest = chanceCounts[j];
+        bestChanceIndex = j;
+      }
+    }
+    if (highest < countChance()){
+      System.out.println(bestChanceIndex);
+      return -1;
+    }else{
+      /*for (int k = 0; k < chanceCounts.length; k++){
+       if (chanceCounts[k] == highest){
+       int store = dice[k];
+       dice[k] = n;
+       */
+      System.out.println(bestChanceIndex);
+      return bestChanceIndex;
+    }
+  }
+  
+  public int countChance(){
+    int chance = 0;
+    for (int a = 1; a <= facesPerDie;a++){
+      for (int b = 0; b < diceInGame; b++){
+        int store = dice[b];
+        dice[b] = a;
+        if (isComplete()){
+          chance++;
+          b = diceInGame;
+        }
+        dice[b] = store;
+      }
+    }
+    return chance;
+  }
+  
+  
+  
+  public static void main(String[] args) {
+    Rollin test = new MyRollin();
+    int turns = 0;
+    while (!test.isComplete()) {
+      test.turn();
+      turns++;
+    }
+    System.out.println(turns);
+  }
+}

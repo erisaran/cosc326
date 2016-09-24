@@ -1,0 +1,35 @@
+private static boolean check(int p1, int p2){
+    if (p1 == 0 && p2 == 0) return false;
+    for (int i = 0; i < pean.size(); i ++){
+      if (yourTurn(pean.get(i),pret.get(i), sign1.get(i), sign2.get(i), p1, p2)) {
+        if (p1 == peanuts && p2 == pretzels) System.out.println(pean.get(i) + " " + pret.get(i));
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  private static boolean yourTurn(int pe, int pr, char s1, char s2, int p1, int p2){
+    if (p1 == 0 && p2 == 0) return false;
+    if (p1 - pe == 0 && p2 - pr == 0) return true;
+    else if (p1 - pe >= 0 || p2 - pr >= 0){
+      boolean t = theirTurn(p1 - pe, p2 - pr);
+      if (t) return !t;
+    }
+    return false;
+  }
+  
+  private static boolean theirTurn(int p1, int p2){
+    if (p1 == 0 && p2 == 0) return false;
+    boolean finishable = false;
+    for (int i = 0; i < pean.size(); i++){
+      if (p1 - pean.get(i) == 0 && p2 - pret.get(i) == 0) {
+        finishable = true;
+        break;
+      }
+      else if (p1 - pean.get(i) > 0 || p2 - pret.get(i) > 0){
+        return check(p1 - pean.get(i),p2 - pret.get(i));
+      }
+    }
+    return finishable;
+  }
