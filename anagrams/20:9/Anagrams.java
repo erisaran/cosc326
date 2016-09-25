@@ -18,7 +18,6 @@ public class Anagrams {
     Scanner d = new Scanner(System.in);
     String sentence = ""; int sl = 0; String sortedSentence = "";
     
-    
     // process args
     if (args.length == 2){
       sentence = args[0].toLowerCase().replaceAll("[^a-z]*", "");
@@ -65,12 +64,10 @@ public class Anagrams {
     
     for (int i = 0; i < c.size(); i++){
       for (int j = 0; j < c.get(i).size(); j++){
-        String newWord = "";
-        for (int k = 0; k < c.get(i).get(j).length; k++){
-          countPlace.clear();
-          for (int z = 0; z < sentence.length(); z++) countPlace.add(0);
-          addWords(c.get(i).get(j), 0, "");
-        }
+        countPlace.clear();
+        for (int z = 0; z < sentence.length(); z++) countPlace.add(0);
+        addWords(c.get(i).get(j), 0, "");
+        
       }
     }
           
@@ -82,9 +79,19 @@ public class Anagrams {
       if (sortWord(w).equals(sortedSentence)) System.out.println(w);
     }
     
+    System.out.println(h.get(2));
+    //System.out.println(possibleAnagrams);
     //System.out.println(sortedSentence + " " + h);
   }
   
+  
+  
+  
+  
+  
+  
+  
+  // recursively create a string with the same number of characters as the starting sentence
   private static void addWords(Integer [] comb, int position, String sen){
     ArrayList<String> work = h.get(comb[position]); // an array of words of a certain length
     

@@ -79,6 +79,7 @@ public class Anagrams {
       if (sortWord(w).equals(sortedSentence)) System.out.println(w);
     }
     
+    System.out.println(h.get(2));
     //System.out.println(possibleAnagrams);
     //System.out.println(sortedSentence + " " + h);
   }
