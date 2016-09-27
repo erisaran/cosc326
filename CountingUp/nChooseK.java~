@@ -1,0 +1,27 @@
+public class nChooseK {
+  
+  
+  
+  public static void main (String[] args) {
+    
+    int n = 0;
+    int k = 0;
+    
+    if (args.length == 2){
+      n = Integer.valueOf(args[0]);
+      k = Integer.valueOf(args[1]);
+    }else {
+      System.out.println("Error incorrect number of args");
+    }
+    
+    for (int nc = 0; nc < 10; nc++) {
+      int nCk = 1;
+      for (int kc = 0; kc <= n; kc++) {
+        if (n == nc && k = kc){
+           System.out.print(nCk);
+        }
+        nCk = nCk * (n-k) / (k+1);
+      }
+    }
+  }
+}

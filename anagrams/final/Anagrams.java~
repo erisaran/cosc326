@@ -1,15 +1,20 @@
 /** Author Benjaman Dutton - ID # 247060
-  *  
+  * 
  **/
 
 import java.util.*;
 
 public class Anagrams {
   
+  // stores the dictionary based on word length
   private static Hashtable<Integer,ArrayList<String>> h = new Hashtable<Integer,ArrayList<String>>();
+  // max amount of words per anagram
   private static int max = 0;
+  // stores the place to avoid double ups when searching for same length words in the same anagram
   private static ArrayList<Integer> countPlace = new ArrayList<Integer>();
+  // the sentence represented in alphabetical order
   private static String sortedSentence = "";
+  // stores the anagrams in order of how they should be printed out
   private static ArrayList<ArrayList<String>> anagrams = new ArrayList<ArrayList<String>>();
   
   public static void main(String [] args){
@@ -23,13 +28,15 @@ public class Anagrams {
       sl = sentence.length();
       sortedSentence = sortWord(sentence);
       max = Integer.valueOf(args[1]);
-    }else System.out.println("Not enough args");
+    }else System.out.println("Wrong amount of args");
+    
     for (int i = 1; i <= sentence.length(); i++) h.put(i, new ArrayList<String>());
     
-    // read stuff
+    // read stuff and does some processing so that only words that could potentially be in
+    // anagrams are added to the hash table
     while(d.hasNextLine()){
       String word = d.nextLine().toLowerCase();
-      boolean pw = true;
+      boolean pw = true; // possible word boolean flag
       for (int i = 0; i < word.length(); i++){
         if (sentence.indexOf(word.charAt(i)) == -1) pw = false;
       }
@@ -43,9 +50,11 @@ public class Anagrams {
     }
     
     for (int i = 0; i < max; i ++) anagrams.add(new ArrayList<String>());
+    
     // do the calculations
     searchForAnagrams(sl,sl,"");
     
+    //prints anagrams
     for (int i = 0; i < anagrams.size(); i++){
       for (int k = 0; k < anagrams.get(i).size(); k ++){
         System.out.println(anagrams.get(i).get(k));

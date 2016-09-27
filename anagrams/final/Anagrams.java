@@ -1,5 +1,7 @@
-/** Author Benjaman Dutton - ID # 247060
-  * 
+/** Author Benjaman Dutton - ID # 247060 & Francesco Lee
+  * The searchForAnagrams method at the end was modelled off of a solution found
+  * on http://stackoverflow.com/questions/7331093/getting-all-possible-sums-that
+  * -add-up-to-a-given-number
  **/
 
 import java.util.*;
@@ -7,15 +9,18 @@ import java.util.*;
 public class Anagrams {
   
   // stores the dictionary based on word length
-  private static Hashtable<Integer,ArrayList<String>> h = new Hashtable<Integer,ArrayList<String>>();
+  private static Hashtable<Integer,ArrayList<String>> h = 
+    new Hashtable<Integer,ArrayList<String>>();
   // max amount of words per anagram
   private static int max = 0;
-  // stores the place to avoid double ups when searching for same length words in the same anagram
+  // stores the place to avoid double ups when searching for same length words 
+  // in the same anagram
   private static ArrayList<Integer> countPlace = new ArrayList<Integer>();
   // the sentence represented in alphabetical order
   private static String sortedSentence = "";
   // stores the anagrams in order of how they should be printed out
-  private static ArrayList<ArrayList<String>> anagrams = new ArrayList<ArrayList<String>>();
+  private static ArrayList<ArrayList<String>> anagrams = 
+    new ArrayList<ArrayList<String>>();
   
   public static void main(String [] args){
     
@@ -30,9 +35,10 @@ public class Anagrams {
       max = Integer.valueOf(args[1]);
     }else System.out.println("Wrong amount of args");
     
-    for (int i = 1; i <= sentence.length(); i++) h.put(i, new ArrayList<String>());
+    for (int i = 1; i <= sl; i++) h.put(i, new ArrayList<String>());
     
-    // read stuff and does some processing so that only words that could potentially be in
+    // read stuff and does some processing so that only words that could 
+    // potentially be in
     // anagrams are added to the hash table
     while(d.hasNextLine()){
       String word = d.nextLine().toLowerCase();
@@ -44,6 +50,7 @@ public class Anagrams {
       if (pw){
         if (h.containsKey(wl)) h.get(wl).add(word);
         else {
+          h.put(wl,new ArrayList<String>());
           h.get(wl).add(word);
         }
       }
@@ -62,9 +69,11 @@ public class Anagrams {
     }
   }
   
-  // recursively create a string with the same number of characters as the starting sentence
+  // recursively create a string with the same number of characters as 
+  // the starting sentence
   private static void addWords(Integer [] comb, int position, String sen){
-    ArrayList<String> work = h.get(comb[position]); // an array of words of a certain length
+    // an array of words of a certain length
+    ArrayList<String> work = h.get(comb[position]); 
     for (int i = countPlace.get(comb[position]-1); i < work.size(); i++){
       countPlace.set(comb[position] -1, i + 1);
       for (int a = 0; a < comb[position] - 1; a++) countPlace.set(a, 0);
