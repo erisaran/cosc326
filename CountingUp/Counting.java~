@@ -1,5 +1,6 @@
 /** Authors Ben Dutton & Francesco Lee
-  * we generated a pascal triangle and modeled part of our answer off of some code 
+  * we generated a pascal triangle to find the answer without needed to manipulate any 
+  * number bigger than long we modeled part of our answer off of some code 
   * found at http://stackoverflow.com/questions/2201113/combinatoric-n-choose-r-in-java-math
   */
 
